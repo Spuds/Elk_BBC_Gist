@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!DOCTYPE package-info SYSTEM "http://www.elkarte.net/site/package-info">
+<package-info xmlns="http://www.elkarte.net/site/package-info" xmlns:elk="http://www.elkarte.net/">
+	<license><![CDATA[
+/**
+ *
+ * @author Joshua Dickerson
+ * @license WTFPL http://www.wtfpl.net/txt/copying/
+ *
+ * @version 1.0
+ */
+	]]></license>
+	<id>JoshuaDickerson:bbcgist</id>
+	<name>BBC Gist Button</name>
+	<version>1.0</version>
+	<type>addon</type>
+	<install for="1.0 - 1.0.99">
+		<require-file name="GistButton.subs.php" destination="SUBSDIR" />
+		<require-file name="GistButton.js" destination="THEMEDIR/scripts" />
+		<hook hook="integrate_bbc_codes" file="SUBSDIR/GistButton.subs.php" function="ibc_gist_button" />
+		<hook hook="integrate_bbc_buttons" file="SUBSDIR/GistButton.subs.php" function="ibb_gist_button" />
+	</install>
+	<uninstall for="1.0 - 1.0.99">
+		<hook reverse="true" hook="integrate_bbc_codes" file="SUBSDIR/GistButton.subs.php" function="ibc_gist_button" />
+		<hook reverse="true" hook="integrate_bbc_buttons" file="SUBSDIR/GistButton.subs.php" function="ibb_gist_button" />
+		<remove-file name="SUBSDIR/GistButton.subs.php" />
+		<remove-file name="THEMEDIR/scripts/GistButton.js" />
+	</uninstall>
+</package-info>
