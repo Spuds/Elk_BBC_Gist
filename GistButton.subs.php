@@ -6,7 +6,7 @@
  * @copyright (c) 2015 Joshua Dickerson
  * @license WTFPL http://www.wtfpl.net/txt/copying/
  *
- * @version 1.0
+ * @version 1.1
  *
  */
 
@@ -16,7 +16,7 @@ if (!defined('ELK'))
 /**
  * ibc_gist_button
  *
- * - Subs hook, integrate_bbc_codes hook, Called from Subs.php
+ * - Subs hook for 1.0.x, integrate_bbc_codes hook, Called from Subs.php
  * - Used to add[gist][/gist] parsing values
  *
  * @param mixed[] $codes array of codes as defined for parse_bbc
@@ -55,6 +55,40 @@ function ibc_gist_button(&$codes, &$no_autolink_tags)
 	);
 
 	$no_autolink_tags[] = 'gist';
+}
+
+/**
+ * iab_gist_button
+ *
+ * - Codes hook for 1.1.x, integrate_additional_bbc, Called from ParseWrapper getCodes()
+ * - Used to add[gist][/gist] parsing values
+ *
+ * @param mixed[] $codes array of codes as defined for parse_bbc
+ */
+function iab_gist_button(&$codes)
+{
+	global $context;
+
+	// Ddd our tag info to the parser, this controls how the tag will render when found in a post
+	$codes[] =
+		array(
+			\BBC\Codes::ATTR_TAG => 'gist',
+			\BBC\Codes::ATTR_TYPE => \BBC\Codes::TYPE_UNPARSED_CONTENT,
+			\BBC\Codes::ATTR_CONTENT => '<script src="//gist.github.com/$1.js"></script>',
+			\BBC\Codes::ATTR_VALIDATE => function(&$tag, &$data, $disabled) {
+				$data = strtr($data, array('<br />' => ''));
+				if (strpos($data, 'http://') !== 0 && strpos($data, 'https://') !== 0)
+				{
+					$data = 'https://' . $data;
+				}
+				$data = ltrim(parse_url($data, PHP_URL_PATH), '\/');
+			},
+			\BBC\Codes::ATTR_BLOCK_LEVEL => true,
+			\BBC\Codes::ATTR_AUTOLINK => false,
+			\BBC\Codes::ATTR_LENGTH => 4,
+		);
+
+	$context['css_rules']['all'] = '.gist-data {max-height: 20em;}';
 }
 
 /**

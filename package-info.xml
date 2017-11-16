@@ -12,7 +12,7 @@
 	]]></license>
 	<id>JoshuaDickerson:bbcgist</id>
 	<name>BBC Gist Button</name>
-	<version>1.0</version>
+	<version>1.1</version>
 	<type>addon</type>
 	<install for="1.0 - 1.0.99">
 		<require-file name="GistButton.subs.php" destination="SUBSDIR" />
@@ -22,6 +22,18 @@
 	</install>
 	<uninstall for="1.0 - 1.0.99">
 		<hook reverse="true" hook="integrate_bbc_codes" file="SUBSDIR/GistButton.subs.php" function="ibc_gist_button" />
+		<hook reverse="true" hook="integrate_bbc_buttons" file="SUBSDIR/GistButton.subs.php" function="ibb_gist_button" />
+		<remove-file name="SUBSDIR/GistButton.subs.php" />
+		<remove-file name="THEMEDIR/scripts/GistButton.js" />
+	</uninstall>
+	<install for="1.1 - 1.1.99">
+		<require-file name="GistButton.subs.php" destination="SUBSDIR" />
+		<require-file name="GistButton.js" destination="THEMEDIR/scripts" />
+		<hook hook="integrate_additional_bbc" file="SUBSDIR/GistButton.subs.php" function="iab_gist_button" />
+		<hook hook="integrate_bbc_buttons" file="SUBSDIR/GistButton.subs.php" function="ibb_gist_button" />
+	</install>
+	<uninstall for="1.1 - 1.1.99">
+		<hook reverse="true" hook="integrate_additional_bbc" file="SUBSDIR/GistButton.subs.php" function="iab_gist_button" />
 		<hook reverse="true" hook="integrate_bbc_buttons" file="SUBSDIR/GistButton.subs.php" function="ibb_gist_button" />
 		<remove-file name="SUBSDIR/GistButton.subs.php" />
 		<remove-file name="THEMEDIR/scripts/GistButton.js" />
